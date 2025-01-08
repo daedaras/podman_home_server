@@ -5,7 +5,8 @@ occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
 # update nextcloud via occ (if it was installed before and when update available)
 systemctl --user start nextcloud &> /dev/null && sleep 5
 if podman ps --format "{{.Names}}" | grep -q "^nextcloud-php$"; then
-    if [ "$($occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n')" != "Everything up to date" ]; then
+    if [ "$(yes 'no' | $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n')" != "Everything up to date" ]; then
+        echo "updating nextcloud"
         $occ maintenance:mode --on &> /dev/null
         $occ upgrade &> /dev/null
         $occ maintenance:mode --off

@@ -8,7 +8,7 @@ Volume=hass-mosquitto-config:/mosquitto/config
 Volume=hass-mosquitto-data:/mosquitto/data
 Volume=hass-mosquitto-log:/mosquitto/log
 Pod=hass.pod
-#PublishPort=8123:8123
+#PublishPort=1883:1883
 
 [Service]
 Restart=always

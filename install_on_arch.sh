@@ -17,7 +17,7 @@ comment "# Install packages"
 sudo pacman -Syu --noconfirm podman nginx brotli nginx-mod-brotli 
 
 #### optional tools & aliases ####
-if [ "$1" == "--additional-tools"]; then
+if [ "$1" == "--additional-tools" ]; then
     comment "# Install additional tools"
     # install optional tools
     sudo pacman -Syu --noconfirm htop mc fish fastfetch inetutils
