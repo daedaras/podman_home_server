@@ -1,0 +1,16 @@
+[Unit]
+Description=nextcloud-php
+
+[Container]
+Image=localhost/nextcloud_php
+ContainerName=nextcloud-php
+EnvironmentFile=/container/envfiles/nextcloud.env
+Volume=nextcloud-web:/nextcloud/web
+Volume=nextcloud-data:/nextcloud/data
+Pod=nextcloud.pod
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

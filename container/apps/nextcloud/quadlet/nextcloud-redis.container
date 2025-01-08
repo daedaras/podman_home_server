@@ -1,0 +1,14 @@
+[Unit]
+Description=nextcloud-redis
+
+[Container]
+Image=localhost/nextcloud_redis
+ContainerName=nextcloud-redis
+EnvironmentFile=/container/envfiles/nextcloud.env
+Pod=nextcloud.pod
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

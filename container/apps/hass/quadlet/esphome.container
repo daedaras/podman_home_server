@@ -1,0 +1,17 @@
+[Unit]
+Description=esphome
+
+[Container]
+Image=docker.io/esphome/esphome:stable
+ContainerName=esphome
+Volume=hass-esphome:/config
+Volume=/etc/localtime:/etc/localtime:ro
+EnvironmentFile=/container/envfiles/hass.env
+Network=host
+#PublishPort=6052:6052
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

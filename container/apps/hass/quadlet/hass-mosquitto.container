@@ -1,0 +1,20 @@
+[Unit]
+Description=hass-mosquitto
+
+[Container]
+Image=docker.io/eclipse-mosquitto:latest
+ContainerName=hass-mosquitto
+Volume=hass-mosquitto-config:/mosquitto/config
+Volume=hass-mosquitto-data:/mosquitto/data
+Volume=hass-mosquitto-log:/mosquitto/log
+Pod=hass.pod
+#PublishPort=8123:8123
+
+[Service]
+Restart=always
+ExecStartPre=mkdir -p hass-mosquitto-config
+ExecStartPre=mkdir -p hass-mosquitto-data
+ExecStartPre=mkdir -p hass-mosquitto-log
+
+[Install]
+WantedBy=multi-user.target default.target

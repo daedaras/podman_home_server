@@ -1,0 +1,15 @@
+[Unit]
+Description=nextcloud-postgres
+
+[Container]
+Image=localhost/nextcloud_postgres
+ContainerName=nextcloud-postgres
+EnvironmentFile=/container/envfiles/nextcloud.env
+Volume=nextcloud-pgdata:/postgres/data
+Pod=nextcloud.pod
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

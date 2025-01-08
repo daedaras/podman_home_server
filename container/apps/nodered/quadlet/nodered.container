@@ -1,0 +1,17 @@
+[Unit]
+Description=nodered
+
+[Container]
+Image=docker.io/nodered/node-red
+ContainerName=nodered
+Volume=nodered-data:/data
+#Environment=NODE_OPTIONS="--httpAdminRoot=/ui/"
+UserNS=keep-id
+Network=pasta
+PublishPort=1880:1880
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

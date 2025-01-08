@@ -1,0 +1,3 @@
+[Build]
+ImageTag=localhost/nextcloud_redis
+SetWorkingDirectory=/container/apps/nextcloud/nextcloud_redis

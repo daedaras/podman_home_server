@@ -1,0 +1,23 @@
+[Unit]
+Description=nextcloud-nginx
+Requires=nextcloud-postgres.service
+Requires=nextcloud-php.service
+Requires=nextcloud-redis.service
+After=nextcloud-postgres.service
+After=nextcloud-php.service
+After=nextcloud-redis.service
+
+[Container]
+Image=localhost/nextcloud_nginx
+ContainerName=nextcloud-nginx
+EnvironmentFile=/container/envfiles/nextcloud.env
+Volume=nextcloud-web:/nextcloud/web
+Volume=nextcloud-data:/nextcloud/data
+Pod=nextcloud.pod
+#PublishPort=4431:4431
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target
