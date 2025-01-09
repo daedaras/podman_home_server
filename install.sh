@@ -23,9 +23,6 @@ log () {
 log "# allow podman user containers to run without login"
 sudo loginctl enable-linger $(id -u)
 
-# log "# install podman-quadlet-create help script"
-# sudo cp podman-quadlet-create.sh /usr/local/bin/podman-quadlet-create
-
 log "# Copy files"
 if [ ! -d "/container" ]; then
     sudo cp -r "$SCRIPT_DIR/container" /container

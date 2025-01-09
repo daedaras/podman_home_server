@@ -11,22 +11,22 @@ VOLUME_PATH="/container/volumes"
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 . /container/envfiles/hass.env
 
-log "# install home-assistant quadlets"
-mkdir -p "~/.config/containers/systemd/hass"
+log "## install home-assistant quadlets"
+mkdir -p ~/.config/containers/systemd/hass
 cp /container/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
 systemctl --user daemon-reload
 
-log "# start home-assistant"
+log "## start home-assistant"
 systemctl --user start hass
 sleep 10
 
-log "# configure home-assistant"
+log "## configure home-assistant"
 podman exec -it hass-hass bash -c 'grep -qF "http:" /config/configuration.yaml || echo "http:" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  use_x_forwarded_for: true" /config/configuration.yaml || echo "  use_x_forwarded_for: true" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  trusted_proxies: 10.0.1.0" /config/configuration.yaml || echo "  trusted_proxies: 10.0.1.0" >> /config/configuration.yaml'
 systemctl --user restart hass-hass
 
-log "# create mosquitto password on new installation"
+log "## create mosquitto password on new installation"
 podman exec -it hass-mosquitto test -f /mosquitto/config/password.txt #check if password was already created
 if [ $? -eq 1 ]; then
     podman cp "$SCRIPT_DIR/mosquitto.conf" hass-mosquitto:/mosquitto/config/mosquitto.conf
@@ -36,5 +36,5 @@ if [ $? -eq 1 ]; then
     podman restart hass-mosquitto
 fi
 
-log "# start esphome"
+log "## start esphome"
 systemctl --user start esphome

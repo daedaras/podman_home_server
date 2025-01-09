@@ -7,17 +7,17 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-log "# stop nodered (if running)"
+log "## stop nodered (if running)"
 systemctl --user stop nodered &> /dev/null
 sleep 5
 
-log "# install nodered quadlets"
-mkdir -p "~/.config/containers/systemd/nodered"
+log "## install nodered quadlets"
+mkdir -p ~/.config/containers/systemd/nodered
 cp /container/apps/nodered/quadlet/* ~/.config/containers/systemd/nodered/
 systemctl --user daemon-reload
 systemctl --user start nodered
 
-log "# configure nodered"
+log "## configure nodered"
 podman exec -it nodered ash -c "cd /data && npm install node-red-contrib-knx-ultimate"
 podman exec -it nodered ash -c "cd /data && npm install node-red-dashboard"
 podman exec -it nodered ash -c "cd /data && npm install node-red-contrib-cron-plus"
