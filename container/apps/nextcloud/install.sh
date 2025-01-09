@@ -19,6 +19,46 @@ cp /container/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 systemctl --user daemon-reload
 systemctl --user start nextcloud
 
+log "## waiting until nextcloud has started..."
+elapsed_time=0
+container_running=false
+CONTAINER_NAME=nextcloud-nginx
+while [ $elapsed_time -lt 120 ]; do
+    # Check if the container is running
+    if podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "^$CONTAINER_NAME$"; then
+        echo "Container '$CONTAINER_NAME' is running."
+        container_running=true
+        break
+    fi
+
+    # Wait for the interval
+    sleep 3
+    elapsed_time=$((elapsed_time + 3))
+done
+
+if [ "$container_running" = false ]; then
+    echo "Error: nextcloud-nginx container did not start in 120 seconds." >&2
+    exit 1
+fi
+
+CONTAINER_NAME=nextcloud-php
+if ! podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "^$CONTAINER_NAME$"; then
+    echo "Error: nextcloud-php container did not start in 120 seconds." >&2
+    exit 1
+fi
+
+CONTAINER_NAME=nextcloud-postgres
+if ! podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "^$CONTAINER_NAME$"; then
+    echo "Error: nextcloud-postgres container did not start in 120 seconds." >&2
+    exit 1
+fi
+
+CONTAINER_NAME=nextcloud-redis
+if ! podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "^$CONTAINER_NAME$"; then
+    echo "Error: nextcloud-redis container did not start in 120 seconds." >&2
+    exit 1
+fi
+
 log "## configure optional settings"
 sleep 10
 if [ "$COLLABORA_WEBROOT" != "" ]; then
