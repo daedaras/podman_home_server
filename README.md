@@ -102,9 +102,10 @@ Please make sure following components/packages are installed:
 ### Installation
 
 1. Update your personal settings in *container/envfiles/*
-2. On arch-linux run the *install_on_arch.sh* (optionally with --additional-tools).
+1. On arch-linux run the *install_on_arch.sh* (optionally with --additional-tools).
    On other distros please make sure you fulfill the prerequisites and run the *install.sh* script.
-3. \[Optionally\] Install the self signed certificate on your client to get rid of ssl errors (browser restart will be required afterwards):
+1. Setup your home-assistant user on the main page: [https://\<HOSTNAME\>/](https://\<HOSTNAME\>/)
+1. \[Optionally\] Install the self signed certificate on your client to get rid of ssl errors (browser restart will be required afterwards):
     - On Mac:
 
       ```bash
@@ -156,12 +157,12 @@ Please make sure following components/packages are installed:
 <!-- USAGE -->
 ## Usage
 
-All pages should be available via the following urls depending on your HOSTNAME setting:
+All pages should be available via the following urls:
 
-- home-assistant: <https://HOSTNAME/>
-- esphome: <https://HOSTNAME/esphome>
-- nextcloud: <https://HOSTNAME/nextcloud>
-- node-red: <https://HOSTNAME/nodered>
+- home-assistant: [https://\<HOSTNAME\>/](https://\<HOSTNAME\>/)
+- esphome:        [https://\<HOSTNAME\>/esphome>](https://\<HOSTNAME\>/esphome>)
+- nextcloud:      [https://\<HOSTNAME\>/nextcloud>](https://\<HOSTNAME\>/nextcloud>)
+- node-red:       [https://\<HOSTNAME\>/nodered>](https://\<HOSTNAME\>/nodered>)
 
 <!-- CONTRIBUTING -->
 <!-- ## Contributing

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+
 # prerequisites: 
 # - nginx with brotli support
 # - podman
@@ -26,7 +28,7 @@ sudo loginctl enable-linger $(id -u)
 
 log "# Copy files"
 if [ ! -d "/container" ]; then
-    sudo cp -r ./container /container
+    sudo cp -r "$SCRIPT_DIR/container" /container
     sudo chown -R 1000:1000 /container
 fi
 
@@ -39,7 +41,7 @@ sudo systemctl stop nginx &> /dev/null
 if [ ! -f "/etc/nginx/nginx.conf.bak" ]; then
     sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 fi
-sudo cp -rf ./nginx/* /etc/nginx/
+sudo cp -rf "$SCRIPT_DIR/nginx"/* /etc/nginx/
 sudo mkdir -p /var/www/html
 sudo mv /etc/nginx/index.html /var/www/html/index.html
 sudo mkdir -p /etc/nginx/ssl
@@ -56,13 +58,16 @@ sudo sed -i 's:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificat
 sudo sed -i 's:#ssl_certificate_key /etc/nginx/ssl/localhost.key;:ssl_certificate_key /etc/nginx/ssl/$HOSTNAME.key;:g' /etc/nginx/nginx.conf
 
 log "# install & start home-assistant"
-cd /container/apps/hass && ./install_or_update.sh
-
-log "# install & start nextcloud"
-cd /container/apps/nextcloud && ./install_or_update.sh
+/container/apps/hass/install_or_update.sh
+# ./container/apps/hass/install_or_update.sh
 
 log "# install & start node-red"
 /container/apps/nodered/install_or_update.sh
+# ./container/apps/nodered/install_or_update.sh
+
+log "# install & start nextcloud"
+/container/apps/nextcloud/install.sh
+# ./container/apps/nextcloud/install.sh
 
 log "# start nginx proxy"
 sudo systemctl start nginx

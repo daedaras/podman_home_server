@@ -14,16 +14,16 @@ comment () {
 }
 
 comment "# Install packages"
-sudo pacman -Syu --noconfirm podman nginx brotli nginx-mod-brotli 
+sudo pacman -Syu --noconfirm podman nginx brotli nginx-mod-brotli
 
 #### optional tools & aliases ####
 if [ "$1" == "--additional-tools" ]; then
     comment "# Install additional tools"
     # install optional tools
     sudo pacman -Syu --noconfirm htop mc fish fastfetch inetutils
-    # use fish as main shell
-    chsh -s $(which fish)
-    sudo chsh -s $(which fish)
+    # # use fish as main shell
+    # chsh -s $(which fish)
+    # sudo chsh -s $(which fish)
     # add bash aliases
     grep -qF "alias ll=" ~/.bashrc || echo "alias ll='ls -lAh'" >> ~/.bashrc
     sudo bash -c "grep -qF \"alias ll=\" ~/.bashrc || echo \"alias ll='ls -lAh'\" >> ~/.bashrc"

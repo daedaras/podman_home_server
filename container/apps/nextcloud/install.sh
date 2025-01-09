@@ -1,28 +1,25 @@
 #!/bin/bash
+# log function (will just highlight the output in blue) 
+log () {
+   blue=$(tput setaf 4)
+   normal=$(tput sgr0)
+   text="$1"
+   printf "${blue}${text}${normal}\n"
+}
+
 . /container/envfiles/nextcloud.env
-occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
 
-# update nextcloud via occ (if it was installed before and when update available)
-systemctl --user start nextcloud &> /dev/null && sleep 5
-if podman ps --format "{{.Names}}" | grep -q "^nextcloud-php$"; then
-    if [ "$(yes 'no' | $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n')" != "Everything up to date" ]; then
-        echo "updating nextcloud"
-        $occ maintenance:mode --on &> /dev/null
-        $occ upgrade &> /dev/null
-        $occ maintenance:mode --off
-    fi
-fi
+log "# stop nextcloud (if running)"
+systemctl --user stop nextcloud &> /dev/null
+sleep 5
 
-# stop nextcloud
-systemctl --user stop nextcloud
-
-# install quadlets
+log "# install nextcloud quadlets"
 mkdir -p "~/.config/containers/systemd/nextcloud"
 cp /container/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 systemctl --user daemon-reload
 systemctl --user start nextcloud
 
-# configure optional settings
+log "# configure optional settings"
 sleep 10
 if [ "$COLLABORA_WEBROOT" != "" ]; then
     podman exec -it nextcloud-collabora sed -i "s:this path.\"></service_root>:this path.\">$COLLABORA_WEBROOT</service_root>:g" /etc/coolwsd/coolwsd.xml
@@ -35,20 +32,20 @@ if [ "$NEXTCLOUD_WEBROOT" != "" ]; then
     podman exec -it nextcloud-nginx nginx -s reload
 fi
 
-# configure settings
+log "# configure settings"
 podman exec -it nextcloud-nginx sed -i "/#overwrite#'overwriteprotocol'/ c\  'overwriteprotocol' => 'https'," /nextcloud/web/config/config.php
 podman exec -it nextcloud-nginx sed -i "/#overwrite#'overwrite.cli.url'/ c\  'overwrite.cli.url' => 'https://$HOSTNAME/nextcloud'," /nextcloud/web/config/config.php
 podman exec -it nextcloud-nginx sed -i "/#overwrite#'password'/ c\    'password' => '$REDIS_PASSWORD'," /nextcloud/web/config/config.php
 podman exec -it nextcloud-nginx sed -i "/#overwrite#'overwritehost'/ c\  'overwritehost' => '$HOSTNAME'," /nextcloud/web/config/config.php
 
-# add alias for occ
+log "# add alias for occ"
 grep -qF "alias occ=" ~/.bashrc || echo "alias occ='podman exec -it nextcloud-php php82 /nextcloud/web/occ'" >> ~/.bashrc
 if which fish > /dev/null ; then
     fish -c "alias --save occ='podman exec -it nextcloud-php php82 /nextcloud/web/occ'"
 fi
 
-# initialize nextcloud
-$occ maintenance:install \
+log "# initialize nextcloud"
+podman exec -it nextcloud-php php82 /nextcloud/web/occ maintenance:install \
   --database='pgsql' \
   --database-host='nextcloud-postgres' \
   --database-port='5432' \
@@ -58,6 +55,7 @@ $occ maintenance:install \
   --admin-user="$NEXTCLOUD_ADMIN_USER" \
   --admin-pass="$NEXTCLOUD_ADMIN_PASSWORD" \
   --data-dir='/nextcloud/data'
+occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
 $occ maintenance:repair --include-expensive
 $occ app:install richdocuments
 $occ app:install mail
@@ -69,4 +67,4 @@ $occ db:add-missing-indices
 $occ config:app:set richdocuments wopi_url --value "https://$HOSTNAME$COLLABORA_WEBROOT"
 $occ config:app:set richdocuments disable_certificate_verification --value "yes"
 $occ config:app:set richdocuments public_wopi_url --value "https://$HOSTNAME"
-#$occ config:app:set richdocuments wopi_allowlist --value "$(hostname -i)"
+# $occ config:app:set richdocuments wopi_allowlist --value "$(hostname -i)"
