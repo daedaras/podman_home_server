@@ -9,6 +9,7 @@ Pod=nextcloud.pod
 
 [Service]
 Restart=always
+ExecStartPre=podman build --tag nextcloud_redis /container/apps/nextcloud/nextcloud_redis
 
 [Install]
 WantedBy=multi-user.target default.target

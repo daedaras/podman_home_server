@@ -10,6 +10,7 @@ Pod=nextcloud.pod
 
 [Service]
 Restart=always
+ExecStartPre=podman build --tag nextcloud_postgres /container/apps/nextcloud/nextcloud_postgres
 
 [Install]
 WantedBy=multi-user.target default.target

@@ -18,6 +18,7 @@ Pod=nextcloud.pod
 
 [Service]
 Restart=always
+ExecStartPre=podman build --tag nextcloud_nginx /container/apps/nextcloud/nextcloud_nginx
 
 [Install]
 WantedBy=multi-user.target default.target

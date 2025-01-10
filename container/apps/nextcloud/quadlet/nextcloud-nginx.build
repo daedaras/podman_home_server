@@ -1,3 +1,0 @@
-[Build]
-ImageTag=localhost/nextcloud_nginx
-SetWorkingDirectory=/container/apps/nextcloud/nextcloud_nginx
