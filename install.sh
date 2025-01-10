@@ -24,10 +24,15 @@ log "# allow podman user containers to run without login"
 sudo loginctl enable-linger $(id -u)
 
 log "# Copy files"
+USER_ID="$(id -u)"
 sudo mkdir -p /container
-sudo chown -R 1000:1000 /container
-rm -r /container/*
-cp -r "$SCRIPT_DIR/container" /container
+sudo chown $USER_ID:$USER_ID /container
+sudo chown $USER_ID:$USER_ID /container/apps &> /dev/null
+sudo chown -R $USER_ID:$USER_ID /container/envfiles &> /dev/null
+sudo rm -r /container/apps/nextcloud &> /dev/null
+sudo rm -r /container/apps/hass &> /dev/null
+sudo rm -r /container/apps/nodered &> /dev/null
+cp -r "$SCRIPT_DIR"/container/* /container/
 
 log "# Link volumes"
 ln -s ~/.local/share/containers/storage/volumes /container/volumes
