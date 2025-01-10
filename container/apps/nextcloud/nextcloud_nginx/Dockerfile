@@ -32,9 +32,6 @@ RUN chown -R nextcloud:nextcloud /var/lib/nginx &&\
 # nextcloud
 RUN mv /nextcloud/nextcloud-config.php /nextcloud/web/config/config.php &&\
     chown nextcloud:nextcloud /nextcloud/web/config/config.php
-# entrypoint
-RUN chmod +x entrypoint.sh &&\
-    mv entrypoint.sh /usr/local/bin/entrypoint
 # log to stdout
 RUN mkdir -p /var/log/nginx &&\
     ln -sf /dev/stdout /var/log/nginx/access.log &&\  
