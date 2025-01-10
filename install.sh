@@ -56,8 +56,8 @@ if [ ! -f "/etc/nginx/ssl/$HOSTNAME.crt" ]; then
     sudo chmod 640 /etc/nginx/ssl/$HOSTNAME.key
     sudo chown root:http /etc/nginx/ssl/$HOSTNAME.key
 fi
-sudo sed -i 's:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificate     /etc/nginx/ssl/$HOSTNAME.crt;:g' /etc/nginx/nginx.conf
-sudo sed -i 's:#ssl_certificate_key /etc/nginx/ssl/localhost.key;:ssl_certificate_key /etc/nginx/ssl/$HOSTNAME.key;:g' /etc/nginx/nginx.conf
+sudo sed -i "s:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificate     /etc/nginx/ssl/$HOSTNAME.crt;:g" /etc/nginx/nginx.conf
+sudo sed -i "s:#ssl_certificate_key /etc/nginx/ssl/localhost.key;:ssl_certificate_key /etc/nginx/ssl/$HOSTNAME.key;:g" /etc/nginx/nginx.conf
 
 log "# install & start home-assistant"
 /container/apps/hass/install_or_update.sh
