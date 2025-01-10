@@ -11,8 +11,14 @@ VOLUME_PATH="/container/volumes"
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 . /container/envfiles/hass.env
 
+log "## stop home-assistant (if running)"
+systemctl --user stop hass &> /dev/null
+systemctl --user stop esphome &> /dev/null
+sleep 5
+
 log "## install home-assistant quadlets"
 mkdir -p ~/.config/containers/systemd/hass
+rm ~/.config/containers/systemd/hass/*
 cp /container/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
 systemctl --user daemon-reload
 

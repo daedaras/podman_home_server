@@ -15,6 +15,7 @@ sleep 5
 
 log "## install nextcloud quadlets"
 mkdir -p ~/.config/containers/systemd/nextcloud
+rm ~/.config/containers/systemd/nextcloud/*
 cp /container/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 systemctl --user daemon-reload
 systemctl --user start nextcloud

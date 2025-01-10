@@ -24,10 +24,10 @@ log "# allow podman user containers to run without login"
 sudo loginctl enable-linger $(id -u)
 
 log "# Copy files"
-if [ ! -d "/container" ]; then
-    sudo cp -r "$SCRIPT_DIR/container" /container
-    sudo chown -R 1000:1000 /container
-fi
+sudo mkdir -p /container
+sudo chown -R 1000:1000 /container
+rm -r /container/*
+cp -r "$SCRIPT_DIR/container" /container
 
 log "# Link volumes"
 ln -s ~/.local/share/containers/storage/volumes /container/volumes
