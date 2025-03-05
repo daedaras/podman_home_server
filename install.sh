@@ -73,3 +73,4 @@ log "# install & start nextcloud"
 
 log "# start nginx proxy"
 sudo systemctl start nginx
+sudo systemctl enable nginx
