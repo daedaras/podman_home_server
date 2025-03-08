@@ -12,10 +12,8 @@ CON_DIR="$SCRIPT_DIR/../.."
 if [ ! -f "$CON_DIR/envfiles/nextcloud.env" ]; then
     cp "$CON_DIR"/envfiles/example.nextcloud.env "$CON_DIR"/envfiles/nextcloud.env
 fi
-cp "$CON_DIR"/envfiles/nextcloud.env "$HOME"/.podman_home_server/hass.env
-. "$HOME"/.podman_home_server/hass.env
-sed -i "s:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificate     /etc/nginx/ssl/$HOSTNAME.crt;:g" /etc/nginx/nginx.conf
-sed -i "s:/container/envfiles::g
+cp "$CON_DIR"/envfiles/nextcloud.env "$HOME"/.podman_home_server/nextcloud.env
+. "$HOME"/.podman_home_server/nextcloud.env
 
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
