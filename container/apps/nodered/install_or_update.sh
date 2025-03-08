@@ -59,6 +59,7 @@ podman exec -it nodered sed -i "/\/\/httpNodeRoot/c\    httpNodeRoot: '/nodered/
 podman exec -it nodered sed -i "/\/\/httpStaticRoot/c\    httpStaticRoot: '/nodered/'," /data/settings.js
 # add template flows
 if [ "$FIRST_INSTALL" == "1" ]; then
+    log "## first installation: adding simple flow testing"
     podman cp "$SCRIPT_DIR"/flows.json nodered:/data/flows.json
 fi
 systemctl --user restart nodered 
