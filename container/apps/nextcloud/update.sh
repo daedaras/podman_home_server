@@ -36,10 +36,10 @@ upgrade () {
    $occ upgrade | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
 }
 $occ maintenance:mode --on
-$runs=0
-$result=""
+runs=0
+result=""
 while [ "$result" != "Nextcloud is already latest version" ] && [ $runs -lt 6 ]; do
-    $result = "$(upgrade)"
+    result="$(upgrade)"
     runs=$((runs + 1))
     sleep 10
 done
