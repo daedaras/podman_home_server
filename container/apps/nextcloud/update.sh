@@ -22,8 +22,9 @@ systemctl --user daemon-reload
 systemctl --user start nextcloud
 sleep 10
 
+occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
 update_check () {
-   podman exec -it nextcloud-php php82 /nextcloud/web/occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
+   $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
 }
 
 while [ "$(update_check)" != "Everything up to date" ]
