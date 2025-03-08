@@ -4,7 +4,7 @@ Description=nextcloud-php
 [Container]
 Image=localhost/nextcloud_php
 ContainerName=nextcloud-php
-EnvironmentFile=%h/.podman_home_server/nextcloud.env
+EnvironmentFile=$HOME/.podman_home_server/nextcloud.env
 Volume=nextcloud-web:/nextcloud/web
 Volume=nextcloud-data:/nextcloud/data
 Pod=nextcloud.pod

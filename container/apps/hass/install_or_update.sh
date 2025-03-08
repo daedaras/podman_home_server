@@ -26,6 +26,13 @@ log "## install home-assistant quadlets"
 mkdir -p ~/.config/containers/systemd/hass
 rm ~/.config/containers/systemd/hass/*
 cp "$CON_DIR"/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
+for file in "$CON_DIR"/apps/hass/quadlet/*; do
+    # Check if it is a regular file
+    if [ -f "$file" ]; then
+        # Use sed to replace literal '$HOME' with the value of the $HOME variable
+        sed -i "s|\$HOME|$HOME|g" "$file"
+    fi
+done
 systemctl --user daemon-reload
 
 log "## start home-assistant"

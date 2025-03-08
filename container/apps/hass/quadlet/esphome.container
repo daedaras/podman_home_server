@@ -7,7 +7,7 @@ ExecArgs=--pull=always
 ContainerName=esphome
 Volume=hass-esphome:/config
 Volume=/etc/localtime:/etc/localtime:ro
-EnvironmentFile=%h/.podman_home_server/hass.env
+EnvironmentFile=$HOME/.podman_home_server/hass.env
 Network=host
 #PublishPort=6052:6052
 

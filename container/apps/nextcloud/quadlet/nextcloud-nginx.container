@@ -10,7 +10,7 @@ After=nextcloud-redis.service
 [Container]
 Image=localhost/nextcloud_nginx
 ContainerName=nextcloud-nginx
-EnvironmentFile=%h/.podman_home_server/nextcloud.env
+EnvironmentFile=$HOME/.podman_home_server/nextcloud.env
 Volume=nextcloud-web:/nextcloud/web
 Volume=nextcloud-data:/nextcloud/data
 Pod=nextcloud.pod

@@ -23,6 +23,13 @@ log "## install nextcloud quadlets"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
 cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
+for file in "$CON_DIR"/apps/hass/nextcloud/*; do
+    # Check if it is a regular file
+    if [ -f "$file" ]; then
+        # Use sed to replace literal '$HOME' with the value of the $HOME variable
+        sed -i "s|\$HOME|$HOME|g" "$file"
+    fi
+done
 systemctl --user daemon-reload
 systemctl --user start nextcloud
 
