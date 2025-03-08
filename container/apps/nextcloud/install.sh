@@ -26,6 +26,7 @@ cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 for file in ~/.config/containers/systemd/nextcloud/*; do
     if [ -f "$file" ]; then
         sed -i "s|\$HOME|$HOME|g" "$file"
+        sed -i "s|\$CONDIR|$CONDIR|g" "$file"
     fi
 done
 systemctl --user daemon-reload

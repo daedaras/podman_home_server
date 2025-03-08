@@ -10,7 +10,7 @@ log () {
 
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-CON_DIR="$SCRIPT_DIR/../.."
+CON_IR="$SCRIPT_DIR/../.."
 
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
@@ -18,10 +18,11 @@ sleep 5
 log "## update nextcloud quadlets && restart nextcloud"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
-cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
+cp "$CONDIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 for file in ~/.config/containers/systemd/nextcloud/*; do
     if [ -f "$file" ]; then
         sed -i "s|\$HOME|$HOME|g" "$file"
+        sed -i "s|\$CONDIR|$CONDIR|g" "$file"
     fi
 done
 systemctl --user daemon-reload

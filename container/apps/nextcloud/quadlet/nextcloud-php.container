@@ -11,7 +11,7 @@ Pod=nextcloud.pod
 
 [Service]
 Restart=always
-ExecStartPre=podman build --tag nextcloud_php /container/apps/nextcloud/nextcloud_php
+ExecStartPre=podman build --tag nextcloud_php $CONDIR/apps/nextcloud/nextcloud_php
 
 [Install]
 WantedBy=multi-user.target default.target
