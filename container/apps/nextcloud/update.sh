@@ -18,6 +18,9 @@ while [ "$(update_check)" != "Everything up to date" ]
     do
         log "# nextcloud update found - installing update"
         $occ upgrade
+        sleep 3
+        $ooc db:add-missing-indices
+        sleep 3
     done
     $occ maintenance:mode --off
 done

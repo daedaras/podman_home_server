@@ -7,7 +7,12 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-. /container/envfiles/nextcloud.env
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+CON_DIR="$SCRIPT_DIR/../.."
+if [ ! -f "$CON_DIR/envfiles/nextcloud.env" ]; then
+    cp "$CON_DIR"/envfiles/example.nextcloud.env "$CON_DIR"/envfiles/nextcloud.env
+fi
+. "$CON_DIR"/envfiles/nextcloud.env
 
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
@@ -16,7 +21,7 @@ sleep 5
 log "## install nextcloud quadlets"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
-cp /container/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
+cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 systemctl --user daemon-reload
 systemctl --user start nextcloud
 

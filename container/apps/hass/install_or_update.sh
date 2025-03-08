@@ -7,19 +7,24 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-VOLUME_PATH="/container/volumes"
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-. /container/envfiles/hass.env
+CON_DIR="$SCRIPT_DIR/../.."
+if [ ! -f "$CON_DIR/envfiles/hass.env" ]; then
+    cp "$CON_DIR"/envfiles/example.hass.env "$CON_DIR"/envfiles/hass.env
+fi
+. "$CON_DIR"/envfiles/hass.env
 
 log "## stop home-assistant (if running)"
 systemctl --user stop hass &> /dev/null
 systemctl --user stop esphome &> /dev/null
 sleep 5
+# podman image rm home-assistant:stable &> /dev/null
+# sleep 3
 
 log "## install home-assistant quadlets"
 mkdir -p ~/.config/containers/systemd/hass
 rm ~/.config/containers/systemd/hass/*
-cp /container/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
+cp "$CON_DIR"/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
 systemctl --user daemon-reload
 
 log "## start home-assistant"

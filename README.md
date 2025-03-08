@@ -49,7 +49,6 @@ This is supposed to run in your home network only. Some of the settings are not 
 - /etc/nginx/nginx.conf
 - /etc/nginx/sites
 - /etc/nginx/ssl
-- /container
 - /usr/local/bin/podman-quadlet-create
 - $HOME/.config/containers/systemd/hass
 - $HOME/.config/containers/systemd/nodered
@@ -101,7 +100,10 @@ Please make sure following components/packages are installed:
 
 ### Installation
 
-1. Update your personal settings in *container/envfiles/*
+1. Copy the example envfiles and adjust your personal them to your needs  
+   - *container/envfiles/example.hass.env -> container/envfiles/hass.env*
+   - *container/envfiles/example.nextcloud.env -> container/envfiles/nextcloud.env*
+   - *container/envfiles/example.proxy.env -> container/envfiles/proxy.env*
 1. On arch-linux run the *install_on_arch.sh* (optionally with --additional-tools).
    On other distros please make sure you fulfill the prerequisites and run the *install.sh* script.
 1. Setup your home-assistant user on the main page: [https://\<HOSTNAME\>/](https://\<HOSTNAME\>/)

@@ -11,10 +11,13 @@ log "## stop nodered (if running)"
 systemctl --user stop nodered &> /dev/null
 sleep 5
 
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+CON_DIR="$SCRIPT_DIR/../.."
+
 log "## install nodered quadlets"
 mkdir -p ~/.config/containers/systemd/nodered
 rm ~/.config/containers/systemd/nodered/*
-cp /container/apps/nodered/quadlet/* ~/.config/containers/systemd/nodered/
+cp "$CON_DIR"/apps/nodered/quadlet/* ~/.config/containers/systemd/nodered/
 systemctl --user daemon-reload
 systemctl --user start nodered
 

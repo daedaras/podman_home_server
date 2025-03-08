@@ -1,0 +1,3 @@
+container/envfiles/hass.env
+container/envfiles/nextcloud.env
+container/envfiles/proxy.env

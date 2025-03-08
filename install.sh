@@ -1,10 +1,10 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-
 # prerequisites: 
 # - nginx with brotli support
 # - podman
+
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 
 # prevent execution as root
 if [ $(/usr/bin/id -u) -eq 0 ]; then
@@ -23,22 +23,12 @@ log () {
 log "# allow podman user containers to run without login"
 sudo loginctl enable-linger $(id -u)
 
-log "# Copy files"
-USER_ID="$(id -u)"
-sudo mkdir -p /container
-sudo chown $USER_ID:$USER_ID /container
-sudo chown $USER_ID:$USER_ID /container/apps &> /dev/null
-sudo chown -R $USER_ID:$USER_ID /container/envfiles &> /dev/null
-sudo rm -r /container/apps/nextcloud &> /dev/null
-sudo rm -r /container/apps/hass &> /dev/null
-sudo rm -r /container/apps/nodered &> /dev/null
-cp -r "$SCRIPT_DIR"/container/* /container/
-
-log "# Link volumes"
-ln -s ~/.local/share/containers/storage/volumes /container/volumes
-
 log "# configure nginx proxy"
-. /container/envfiles/proxy.env
+if [ ! -f "$SCRIPT_DIR/container/envfiles/proxy.env" ]; then
+    cp "$SCRIPT_DIR/container/envfiles/example.proxy.env" "$SCRIPT_DIR/container/envfiles/proxy.env"
+fi
+. "$SCRIPT_DIR/container/envfiles/proxy.env"
+
 sudo systemctl stop nginx &> /dev/null
 if [ ! -f "/etc/nginx/nginx.conf.bak" ]; then
     sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak

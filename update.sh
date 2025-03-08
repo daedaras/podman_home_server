@@ -21,7 +21,7 @@ log "# install or update home-assistant"
 cd /container/apps/hass && ./install_or_update.sh
 
 log "# install or update nextcloud"
-cd /container/apps/nextcloud && ./update.sh
+/container/apps/nextcloud/update.sh
 
 log "# install or update node-red"
 /container/apps/nodered/install_or_update.sh
