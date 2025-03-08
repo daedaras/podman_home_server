@@ -36,16 +36,17 @@ update_check () {
    $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
 }
 
-while [ "$(update_check)" != "Everything up to date" ]
-do
+if [ "$(update_check)" != "Everything up to date" ]; then
     $occ maintenance:mode --on
-    while [ "$(update_check)" ]
-    do
-        log "# nextcloud update found - installing update"
-        $occ upgrade
-        sleep 3
-        $ooc db:add-missing-indices
-        sleep 3
+    while [ "$(update_check)" ]; do
+        if $occ upgrade; then
+            sleep 3
+            $occ db:add-missing-indices
+            sleep 5
+        else
+            log "# Upgrade failed! Retrying after 10 seconds..."
+            sleep 10
+        fi
     done
     $occ maintenance:mode --off
-done
+fi
