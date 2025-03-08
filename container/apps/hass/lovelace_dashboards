@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace_dashboards",
+  "data": {
+    "items": [
+      {
+        "id": "map",
+        "icon": "mdi:map",
+        "title": "Karte",
+        "url_path": "map",
+        "show_in_sidebar": true,
+        "mode": "storage",
+        "require_admin": false
+      },
+      {
+        "id": "dashboard_nextcloud",
+        "show_in_sidebar": true,
+        "icon": "mdi:apple-icloud",
+        "title": "Nextcloud",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-nextcloud"
+      },
+      {
+        "id": "dashboard_nodered",
+        "show_in_sidebar": true,
+        "icon": "mdi:resistor-nodes",
+        "title": "Nodered",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-nodered"
+      },
+      {
+        "id": "dashboard_esphome",
+        "show_in_sidebar": true,
+        "icon": "mdi:car-esp",
+        "title": "Esphome",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-esphome"
+      },
+      {
+        "id": "dashboard_hass-conf",
+        "show_in_sidebar": true,
+        "icon": "mdi:wrench",
+        "title": "Config",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-hass-conf"
+      }
+    ]
+  }
+}

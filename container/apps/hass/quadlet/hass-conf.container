@@ -1,0 +1,26 @@
+[Unit]
+Description=hass-conf
+Requires=hass-hass.service
+After=hass-hass.service
+Requires=esphome.service
+After=esphome.service
+
+[Container]
+Image=docker.io/causticlab/hass-configurator-docker:latest
+ContainerName=hass-conf
+AddCapability=CAP_NET_RAW CAP_NET_BIND_SERVICE
+EnvironmentFile=$HOME/.podman_home_server/hass.env
+Volume=hass-hassconf:/config
+Volume=hass-config:/hass-config
+Volume=hass-esphome:/hass-config/esphome
+Pod=hass.pod
+#PublishPort=3218:3218
+
+[Service]
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=70
+ExecStartPre=podman pull docker.io/causticlab/hass-configurator-docker:latest
+
+[Install]
+WantedBy=multi-user.target default.target

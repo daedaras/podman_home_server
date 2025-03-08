@@ -9,6 +9,7 @@ PublishPort=8123:8123
 #PublishPort=6052:6052
 PublishPort=1883:1883
 PublishPort=8086:8086
+PublishPort=3218:3218
 
 [Service]
 Restart=always

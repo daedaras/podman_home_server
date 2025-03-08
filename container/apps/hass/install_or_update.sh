@@ -64,6 +64,19 @@ sleep 60
 podman exec -it hass-hass bash -c 'grep -qF "http:" /config/configuration.yaml || echo "http:" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  use_x_forwarded_for: true" /config/configuration.yaml || echo "  use_x_forwarded_for: true" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  trusted_proxies: 10.0.1.0" /config/configuration.yaml || echo "  trusted_proxies: 10.0.1.0" >> /config/configuration.yaml'
+# add webpages to side bar - START
+podman exec -it hass-hass test -f /config/.storage/lovelace.dashboard_esphome
+if [ $? -eq 1 ]; then
+    podman exec -it hass
+    podman cp "$SCRIPTDIR/lovelace.dashboard_esphome" hass-hass:/config/.storage/lovelace.dashboard_esphome
+    podman cp "$SCRIPTDIR/lovelace.dashboard_hass-conf" hass-hass:/config/.storage/lovelace.dashboard_hass-conf
+    podman cp "$SCRIPTDIR/lovelace.dashboard_nextcloud" hass-hass:/config/.storage/lovelace.dashboard_nectcloud
+    podman cp "$SCRIPTDIR/lovelace.dashboard_nodered" hass-hass:/config/.storage/lovelace.dashboard_nodered
+    podman cp "$SCRIPTDIR/lovelace.map" hass-hass:/config/.storage/lovelace.map
+    podman exec -it hass-hass cp /config/.storage/lovelace_dashboards /config/.storage/lovelace_dashboards.bak
+    podman cp "$SCRIPTDIR/lovelace_dashboards" hass-hass:/config/.storage/lovelace_dashboards
+fi
+# add webpages to side bar - END
 systemctl --user restart hass-hass
 
 log "## check if mosquitto is running"

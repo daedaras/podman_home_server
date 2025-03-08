@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_esphome",
+  "data": {
+    "config": {
+      "strategy": {
+        "type": "iframe",
+        "url": "$HOSTNAME/esphome"
+      }
+    }
+  }
+}
