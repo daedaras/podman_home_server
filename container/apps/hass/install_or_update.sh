@@ -7,12 +7,12 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-CON_DIR="$SCRIPT_DIR/../.."
-if [ ! -f "$CON_DIR/envfiles/hass.env" ]; then
-    cp "$CON_DIR"/envfiles/example.hass.env "$CON_DIR"/envfiles/hass.env
+SCRIPTDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+CONDIR=$(realpath "$SCRIPTDIR/../..")
+if [ ! -f "$CONDIR/envfiles/hass.env" ]; then
+    cp "$CONDIR"/envfiles/example.hass.env "$CONDIR"/envfiles/hass.env
 fi
-cp "$CON_DIR"/envfiles/hass.env "$HOME"/.podman_home_server/hass.env
+cp "$CONDIR"/envfiles/hass.env "$HOME"/.podman_home_server/hass.env
 . "$HOME"/.podman_home_server/hass.env
 
 log "## stop home-assistant (if running)"
@@ -25,7 +25,7 @@ sleep 5
 log "## install home-assistant quadlets"
 mkdir -p ~/.config/containers/systemd/hass
 rm ~/.config/containers/systemd/hass/*
-cp "$CON_DIR"/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
+cp "$CONDIR"/apps/hass/quadlet/* ~/.config/containers/systemd/hass/
 for file in ~/.config/containers/systemd/hass/*; do
     if [ -f "$file" ]; then
         sed -i "s|\$HOME|$HOME|g" "$file"
@@ -76,7 +76,7 @@ fi
 log "## create mosquitto password on new installation"
 podman exec -it hass-mosquitto test -f /mosquitto/config/password.txt #check if password was already created
 if [ $? -eq 1 ]; then
-    podman cp "$SCRIPT_DIR/mosquitto.conf" hass-mosquitto:/mosquitto/config/mosquitto.conf
+    podman cp "$SCRIPTDIR/mosquitto.conf" hass-mosquitto:/mosquitto/config/mosquitto.conf
     podman exec -it hass-mosquitto ash -c "yes '$MOSQUITTO_PASSWORD' | mosquitto_passwd -c /mosquitto/config/password.txt $MOSQUITTO_USERNAME"
     podman exec -it hass-mosquitto sed -i 's:#allow_anonymous:allow_anonymous false:g' /mosquitto/config/mosquitto.conf
     podman exec -it hass-mosquitto sed -i 's:#password_file:password_file /mosquitto/config/password.txt:g' /mosquitto/config/mosquitto.conf

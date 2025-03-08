@@ -7,12 +7,12 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-CON_DIR="$SCRIPT_DIR/../.."
-if [ ! -f "$CON_DIR/envfiles/nextcloud.env" ]; then
-    cp "$CON_DIR"/envfiles/example.nextcloud.env "$CON_DIR"/envfiles/nextcloud.env
+SCRIPTDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+CONDIR=$(realpath "$SCRIPTDIR/../..")
+if [ ! -f "$CONDIR/envfiles/nextcloud.env" ]; then
+    cp "$CONDIR"/envfiles/example.nextcloud.env "$CONDIR"/envfiles/nextcloud.env
 fi
-cp "$CON_DIR"/envfiles/nextcloud.env "$HOME"/.podman_home_server/nextcloud.env
+cp "$CONDIR"/envfiles/nextcloud.env "$HOME"/.podman_home_server/nextcloud.env
 . "$HOME"/.podman_home_server/nextcloud.env
 
 log "## stop nextcloud (if running)"
@@ -21,8 +21,9 @@ sleep 5
 
 log "## install nextcloud quadlets"
 mkdir -p ~/.config/containers/systemd/nextcloud
-rm ~/.config/containers/systemd/nextcloud/*
-cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
+rm -rf ~/.config/containers/systemd/nextcloud
+mkdir -p ~/.config/containers/systemd/nextcloud
+cp "$CONDIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 for file in ~/.config/containers/systemd/nextcloud/*; do
     if [ -f "$file" ]; then
         sed -i "s|\$HOME|$HOME|g" "$file"

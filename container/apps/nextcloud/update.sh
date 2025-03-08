@@ -8,9 +8,8 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
-
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-CONDIR="$SCRIPT_DIR/../.."
+SCRIPTDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+CONDIR=$(realpath "$SCRIPTDIR/../..")
 
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
@@ -18,7 +17,8 @@ sleep 5
 
 log "## update nextcloud quadlets && restart nextcloud"
 mkdir -p ~/.config/containers/systemd/nextcloud
-rm ~/.config/containers/systemd/nextcloud/*
+rm -rf ~/.config/containers/systemd/nextcloud
+mkdir -p ~/.config/containers/systemd/nextcloud
 cp "$CONDIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
 for file in ~/.config/containers/systemd/nextcloud/*; do
     if [ -f "$file" ]; then
