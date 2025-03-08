@@ -11,6 +11,7 @@ log () {
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 CON_DIR="$SCRIPT_DIR/../.."
+
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
 sleep 5
@@ -18,10 +19,8 @@ log "## update nextcloud quadlets && restart nextcloud"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
 cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
-for file in "$CON_DIR"/apps/nextcloud/quadlet/*; do
-    # Check if it is a regular file
+for file in ~/.config/containers/systemd/nextcloud/*; do
     if [ -f "$file" ]; then
-        # Use sed to replace literal '$HOME' with the value of the $HOME variable
         sed -i "s|\$HOME|$HOME|g" "$file"
     fi
 done
