@@ -3,7 +3,6 @@ Description=nodered
 
 [Container]
 Image=docker.io/nodered/node-red
-ExecArgs=--pull=always
 ContainerName=nodered
 Volume=nodered-data:/data
 #Environment=NODE_OPTIONS="--httpAdminRoot=/ui/"
