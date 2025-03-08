@@ -10,11 +10,12 @@ log () {
 
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-CON_IR="$SCRIPT_DIR/../.."
+CONDIR="$SCRIPT_DIR/../.."
 
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
 sleep 5
+
 log "## update nextcloud quadlets && restart nextcloud"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
