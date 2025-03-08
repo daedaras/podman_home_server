@@ -19,14 +19,14 @@ log () {
 log "# stop nginx proxy"
 sudo systemctl stop nginx
 
+log "# install or update node-red"
+"$SCRIPT_DIR"/container/apps/nodered/install_or_update.sh
+
 log "# install or update home-assistant"
 "$SCRIPT_DIR"/container/apps/hass/install_or_update.sh
 
 log "# install or update nextcloud"
 "$SCRIPT_DIR"/container/apps/nextcloud/update.sh
-
-log "# install or update node-red"
-"$SCRIPT_DIR"/container/apps/nodered/install_or_update.sh
 
 log "# start nginx proxy"
 sudo systemctl start nginx

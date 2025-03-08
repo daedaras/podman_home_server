@@ -53,13 +53,13 @@ fi
 sudo sed -i "s:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificate     /etc/nginx/ssl/$HOSTNAME.crt;:g" /etc/nginx/nginx.conf
 sudo sed -i "s:#ssl_certificate_key /etc/nginx/ssl/localhost.key;:ssl_certificate_key /etc/nginx/ssl/$HOSTNAME.key;:g" /etc/nginx/nginx.conf
 
-log "# install & start home-assistant"
-"$SCRIPT_DIR"/container/apps/hass/install_or_update.sh
-# ./container/apps/hass/install_or_update.sh
-
 log "# install & start node-red"
 "$SCRIPT_DIR"/container/apps/nodered/install_or_update.sh
 # ./container/apps/nodered/install_or_update.sh
+
+log "# install & start home-assistant"
+"$SCRIPT_DIR"/container/apps/hass/install_or_update.sh
+# ./container/apps/hass/install_or_update.sh
 
 log "# install & start nextcloud"
 "$SCRIPT_DIR"/container/apps/nextcloud/install.sh
