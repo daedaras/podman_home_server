@@ -20,4 +20,4 @@ while [ "$(update_check)" != "Everything up to date" ]
         $occ upgrade
     done
     $occ maintenance:mode --off
-fi
+done
