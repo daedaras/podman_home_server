@@ -39,8 +39,9 @@ runs=0
 result=""
 while [ "$result" != "Nextcloud is already latest version" ] && [ $runs -lt 3 ]; do
     result="$(upgrade)"
+    echo $result
     runs=$((runs + 1))
     sleep 10
 done
 $occ db:add-missing-indices
-$occ maintenance:mode --off
+$occ maintenance:mode --off &> /dev/null

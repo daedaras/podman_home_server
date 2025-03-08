@@ -4,6 +4,8 @@ Requires=hass-hass.service
 After=hass-hass.service
 Requires=esphome.service
 After=esphome.service
+Requires=hass-mosquitto.service
+After=hass-mosquitto.service
 
 [Container]
 Image=docker.io/causticlab/hass-configurator-docker:latest
@@ -11,6 +13,7 @@ ContainerName=hass-conf
 Environment="BASEPATH=/config"
 Volume=hass-config:/config/home-assistant
 Volume=hass-esphome:/config/esphome
+Volume=hass-mosquitto-config:/config/mosquitto
 Pod=hass.pod
 #PublishPort=3218:3218
 
