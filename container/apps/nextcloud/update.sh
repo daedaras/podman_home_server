@@ -44,4 +44,5 @@ while [ "$result" != "Nextcloud is already latest version" ] && [ $runs -lt 6 ];
     sleep 10
 done
 $occ db:add-missing-indices
+sleep 20
 $occ maintenance:mode --off
