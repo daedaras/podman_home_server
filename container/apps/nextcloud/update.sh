@@ -14,7 +14,7 @@ CON_DIR="$SCRIPT_DIR/../.."
 log "## stop nextcloud (if running)"
 systemctl --user stop nextcloud &> /dev/null
 sleep 5
-log "## update nextcloud quadlets"
+log "## update nextcloud quadlets && restart nextcloud"
 mkdir -p ~/.config/containers/systemd/nextcloud
 rm ~/.config/containers/systemd/nextcloud/*
 cp "$CON_DIR"/apps/nextcloud/quadlet/* ~/.config/containers/systemd/nextcloud/
@@ -22,6 +22,7 @@ systemctl --user daemon-reload
 systemctl --user start nextcloud
 sleep 10
 
+log "## install updates if available"
 occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
 update_check () {
    $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'

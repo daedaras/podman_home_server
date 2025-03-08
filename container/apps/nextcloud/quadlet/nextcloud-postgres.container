@@ -4,7 +4,7 @@ Description=nextcloud-postgres
 [Container]
 Image=localhost/nextcloud_postgres
 ContainerName=nextcloud-postgres
-EnvironmentFile=%h/.podman_home_server/nextcloud.env
+EnvironmentFile=~/.podman_home_server/nextcloud.env
 Volume=nextcloud-pgdata:/postgres/data
 Pod=nextcloud.pod
 
