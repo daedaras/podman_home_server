@@ -9,6 +9,13 @@ log () {
 
 SCRIPTDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 CONDIR=$(realpath "$SCRIPTDIR/../..")
+
+# check if first installation
+HASS_CONF_FIRST_INSTALL=1
+if podman volume inspect hass-hassconf &>/dev/null; then
+    HASS_CONF_FIRST_INSTALL=0
+fi
+
 if [ ! -f "$CONDIR/envfiles/hass.env" ]; then
     cp "$CONDIR"/envfiles/example.hass.env "$CONDIR"/envfiles/hass.env
 fi
@@ -105,3 +112,9 @@ fi
 
 log "## start esphome"
 systemctl --user start esphome
+
+# configure hass-conf
+if [ "$HASS_CONF_FIRST_INSTALL" == "1" ]; then
+    log "## configure hass-conf on new installation"
+    podman cp "$SCRIPT_DIR"/hass-conf_settings.conf hass-conf:/config/settings.conf
+fi
