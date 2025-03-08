@@ -32,21 +32,15 @@ sleep 10
 
 log "## install updates if available"
 occ="podman exec -it nextcloud-php php82 /nextcloud/web/occ"
-update_check () {
-   $occ update:check | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
+upgrade () {
+   $occ upgrade | sed -r 's/\x1B\[[0-9;]*[mK]//g' | tr -d '\r\n'
 }
 
-if [ "$(update_check)" != "Everything up to date" ]; then
-    $occ maintenance:mode --on
-    while [ "$(update_check)" != "Everything up to date" ]; do
-        if $occ upgrade; then
-            sleep 3
-            $occ db:add-missing-indices
-            sleep 5
-        else
-            log "# Upgrade failed! Retrying after 10 seconds..."
-            sleep 10
-        fi
-    done
-    $occ maintenance:mode --off
-fi
+$occ maintenance:mode --on
+$runs = 0
+while [ "$(upgrade)" != "Nextcloud is already latest version" && $runs < 6 ]; do
+    sleep 10
+    $runs = $runs + 1
+done
+$occ db:add-missing-indices
+$occ maintenance:mode --off
