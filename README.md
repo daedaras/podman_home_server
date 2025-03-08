@@ -49,10 +49,9 @@ This is supposed to run in your home network only. Some of the settings are not 
 - /etc/nginx/nginx.conf
 - /etc/nginx/sites
 - /etc/nginx/ssl
-- /usr/local/bin/podman-quadlet-create
-- $HOME/.config/containers/systemd/hass
-- $HOME/.config/containers/systemd/nodered
-- $HOME/.config/containers/systemd/nextcloud
+- ~/.config/containers/systemd/hass
+- ~/.config/containers/systemd/nodered
+- ~/.config/containers/systemd/nextcloud
 
 and create following images:
 
@@ -100,7 +99,7 @@ Please make sure following components/packages are installed:
 
 ### Installation
 
-1. Copy the example envfiles and adjust your personal them to your needs  
+1. Copy the example envfiles and adjust them to your needs  
    - *container/envfiles/example.hass.env -> container/envfiles/hass.env*
    - *container/envfiles/example.nextcloud.env -> container/envfiles/nextcloud.env*
    - *container/envfiles/example.proxy.env -> container/envfiles/proxy.env*
