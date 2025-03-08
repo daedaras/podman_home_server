@@ -13,6 +13,7 @@ update_check () {
 }
 
 while [ "$(update_check)" != "Everything up to date" ]
+do
     $occ maintenance:mode --on
     while [ "$(update_check)" ]
     do
