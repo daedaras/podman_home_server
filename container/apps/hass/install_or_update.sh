@@ -41,6 +41,9 @@ for file in ~/.config/containers/systemd/hass/*; do
 done
 systemctl --user daemon-reload
 
+log "## start esphome"
+systemctl --user start esphome
+
 log "## start home-assistant"
 systemctl --user start hass
 
@@ -72,7 +75,6 @@ sleep 60
 podman exec -it hass-hass bash -c 'grep -qF "http:" /config/configuration.yaml || echo "http:" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  use_x_forwarded_for: true" /config/configuration.yaml || echo "  use_x_forwarded_for: true" >> /config/configuration.yaml'
 podman exec -it hass-hass bash -c 'grep -qF "  trusted_proxies: 10.0.1.0" /config/configuration.yaml || echo "  trusted_proxies: 10.0.1.0" >> /config/configuration.yaml'
-# add webpages to side bar - START
 podman exec -it hass-hass test -f /config/.storage/lovelace.dashboard_esphome
 if [ $? -eq 1 ]; then
     podman exec -it hass-hass mkdir -p /config/.storage
@@ -90,9 +92,19 @@ if [ $? -eq 1 ]; then
     podman exec -it hass-hass cp /config/.storage/lovelace_dashboards /config/.storage/lovelace_dashboards.bak &> /dev/null
     podman cp "$SCRIPTDIR/lovelace_dashboards" hass-hass:/config/.storage/lovelace_dashboards
 fi
-# add webpages to side bar - END
-systemctl --user restart hass-hass
 
+### hass-conf ###
+if [ "$HASS_CONF_FIRST_INSTALL" == "1" ]; then
+    log "## configure hass-conf on new installation"
+    podman cp "$SCRIPT_DIR"/hass-conf_settings.conf hass-conf:/config/settings.conf
+fi
+### hass-conf ###
+
+log "## restart hass && hass-conf"
+systemctl --user restart hass
+systemctl --user restart hass-conf
+
+### mosquitto ###
 log "## check if mosquitto is running"
 CONTAINER_NAME=hass-mosquitto
 if ! podman ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "^$CONTAINER_NAME$"; then
@@ -109,12 +121,4 @@ if [ $? -eq 1 ]; then
     podman exec -it hass-mosquitto sed -i 's:#password_file:password_file /mosquitto/config/password.txt:g' /mosquitto/config/mosquitto.conf
     podman restart hass-mosquitto
 fi
-
-log "## start esphome"
-systemctl --user start esphome
-
-# configure hass-conf
-if [ "$HASS_CONF_FIRST_INSTALL" == "1" ]; then
-    log "## configure hass-conf on new installation"
-    podman cp "$SCRIPT_DIR"/hass-conf_settings.conf hass-conf:/config/settings.conf
-fi
+### mosquitto ###
