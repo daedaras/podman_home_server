@@ -68,16 +68,19 @@ podman exec -it hass-hass bash -c 'grep -qF "  trusted_proxies: 10.0.1.0" /confi
 # add webpages to side bar - START
 podman exec -it hass-hass test -f /config/.storage/lovelace.dashboard_esphome
 if [ $? -eq 1 ]; then
+    podman exec -it hass-hass mkdir -p /config/.storage
     podman cp "$SCRIPTDIR/lovelace.dashboard_esphome" hass-hass:/config/.storage/lovelace.dashboard_esphome
     podman exec -it hass-hass sed -i "s|\$HOSTNAME|$HOSTNAME|g" "/config/.storage/lovelace.dashboard_esphome"
     podman cp "$SCRIPTDIR/lovelace.dashboard_hass-conf" hass-hass:/config/.storage/lovelace.dashboard_hass-conf
     podman exec -it hass-hass sed -i "s|\$HOSTNAME|$HOSTNAME|g" "/config/.storage/lovelace.dashboard_hass-conf"
-    podman cp "$SCRIPTDIR/lovelace.dashboard_nextcloud" hass-hass:/config/.storage/lovelace.dashboard_nectcloud
+    podman cp "$SCRIPTDIR/lovelace.dashboard_nextcloud" hass-hass:/config/.storage/lovelace.dashboard_nextcloud
     podman exec -it hass-hass sed -i "s|\$HOSTNAME|$HOSTNAME|g" "/config/.storage/lovelace.dashboard_nextcloud"
     podman cp "$SCRIPTDIR/lovelace.dashboard_nodered" hass-hass:/config/.storage/lovelace.dashboard_nodered
     podman exec -it hass-hass sed -i "s|\$HOSTNAME|$HOSTNAME|g" "/config/.storage/lovelace.dashboard_nodered"
+    podman cp "$SCRIPTDIR/lovelace.dashboard_nodered-ui" hass-hass:/config/.storage/lovelace.dashboard_nodered-ui
+    podman exec -it hass-hass sed -i "s|\$HOSTNAME|$HOSTNAME|g" "/config/.storage/lovelace.dashboard_nodered-ui"
     podman cp "$SCRIPTDIR/lovelace.map" hass-hass:/config/.storage/lovelace.map
-    podman exec -it hass-hass cp /config/.storage/lovelace_dashboards /config/.storage/lovelace_dashboards.bak
+    podman exec -it hass-hass cp /config/.storage/lovelace_dashboards /config/.storage/lovelace_dashboards.bak &> /dev/null
     podman cp "$SCRIPTDIR/lovelace_dashboards" hass-hass:/config/.storage/lovelace_dashboards
 fi
 # add webpages to side bar - END

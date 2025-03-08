@@ -32,6 +32,15 @@
         "url_path": "dashboard-nodered"
       },
       {
+        "id": "dashboard_nodered-ui",
+        "show_in_sidebar": true,
+        "icon": "mdi:resistor-nodes",
+        "title": "Nodered UI",
+        "require_admin": false,
+        "mode": "storage",
+        "url_path": "dashboard-nodered-ui"
+      },
+      {
         "id": "dashboard_esphome",
         "show_in_sidebar": true,
         "icon": "mdi:car-esp",

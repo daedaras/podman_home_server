@@ -14,6 +14,12 @@ sleep 5
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 CON_DIR="$SCRIPT_DIR/../.."
 
+# check if first installation
+FIRST_INSTALL=1
+if podman volume inspect nodered-data &>/dev/null; then
+    FIRST_INSTALL=0
+fi
+
 log "## install nodered quadlets"
 mkdir -p ~/.config/containers/systemd/nodered
 rm ~/.config/containers/systemd/nodered/*
@@ -51,4 +57,8 @@ podman exec -it nodered ash -c "cd /data && npm install node-red-contrib-cron-pl
 podman exec -it nodered sed -i "/\/\/httpAdminRoot/c\    httpAdminRoot: '/nodered/'," /data/settings.js
 podman exec -it nodered sed -i "/\/\/httpNodeRoot/c\    httpNodeRoot: '/nodered/'," /data/settings.js
 podman exec -it nodered sed -i "/\/\/httpStaticRoot/c\    httpStaticRoot: '/nodered/'," /data/settings.js
-systemctl --user restart nodered
+# add template flows
+if [ "$FIRST_INSTALL" == "1" ]; then
+    podman cp "$SCRIPT_DIR"/flows.json nodered:/data/flows.json
+fi
+systemctl --user restart nodered 

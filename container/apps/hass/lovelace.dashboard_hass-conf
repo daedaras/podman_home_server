@@ -6,7 +6,7 @@
     "config": {
       "strategy": {
         "type": "iframe",
-        "url": "$HOSTNAME/hass-conf"
+        "url": "https://$HOSTNAME/hass-conf"
       }
     }
   }
