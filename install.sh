@@ -20,6 +20,9 @@ log () {
    printf "${blue}${text}${normal}\n"
 }
 
+# create settings folder
+mkdir -p "$HOME"/.podman_home_server
+
 log "# allow podman user containers to run without login"
 sudo loginctl enable-linger $(id -u)
 
@@ -27,7 +30,8 @@ log "# configure nginx proxy"
 if [ ! -f "$SCRIPT_DIR/container/envfiles/proxy.env" ]; then
     cp "$SCRIPT_DIR/container/envfiles/example.proxy.env" "$SCRIPT_DIR/container/envfiles/proxy.env"
 fi
-. "$SCRIPT_DIR/container/envfiles/proxy.env"
+cp "$SCRIPT_DIR/container/envfiles/proxy.env" "$HOME"/.podman_home_server/proxy.env
+. "$HOME"/.podman_home_server/proxy.env
 
 sudo systemctl stop nginx &> /dev/null
 if [ ! -f "/etc/nginx/nginx.conf.bak" ]; then
@@ -50,15 +54,15 @@ sudo sed -i "s:#ssl_certificate     /etc/nginx/ssl/localhost.crt;:ssl_certificat
 sudo sed -i "s:#ssl_certificate_key /etc/nginx/ssl/localhost.key;:ssl_certificate_key /etc/nginx/ssl/$HOSTNAME.key;:g" /etc/nginx/nginx.conf
 
 log "# install & start home-assistant"
-/container/apps/hass/install_or_update.sh
+"$SCRIPT_DIR"/container/apps/hass/install_or_update.sh
 # ./container/apps/hass/install_or_update.sh
 
 log "# install & start node-red"
-/container/apps/nodered/install_or_update.sh
+"$SCRIPT_DIR"/container/apps/nodered/install_or_update.sh
 # ./container/apps/nodered/install_or_update.sh
 
 log "# install & start nextcloud"
-/container/apps/nextcloud/install.sh
+"$SCRIPT_DIR"/container/apps/nextcloud/install.sh
 # ./container/apps/nextcloud/install.sh
 
 log "# start nginx proxy"

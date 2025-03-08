@@ -6,6 +6,8 @@ if [ $(/usr/bin/id -u) -eq 0 ]; then
     exit
 fi
 
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+
 # log function (will just highlight the output in blue) 
 log () {
    blue=$(tput setaf 4)
@@ -18,13 +20,13 @@ log "# stop nginx proxy"
 sudo systemctl stop nginx
 
 log "# install or update home-assistant"
-cd /container/apps/hass && ./install_or_update.sh
+"$SCRIPT_DIR"/container/apps/hass/install_or_update.sh
 
 log "# install or update nextcloud"
-/container/apps/nextcloud/update.sh
+"$SCRIPT_DIR"/container/apps/nextcloud/update.sh
 
 log "# install or update node-red"
-/container/apps/nodered/install_or_update.sh
+"$SCRIPT_DIR"/container/apps/nodered/install_or_update.sh
 
 log "# start nginx proxy"
 sudo systemctl start nginx

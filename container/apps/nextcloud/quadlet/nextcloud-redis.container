@@ -4,7 +4,7 @@ Description=nextcloud-redis
 [Container]
 Image=localhost/nextcloud_redis
 ContainerName=nextcloud-redis
-EnvironmentFile=/container/envfiles/nextcloud.env
+EnvironmentFile=%h/.podman_home_server/nextcloud.env
 Pod=nextcloud.pod
 
 [Service]

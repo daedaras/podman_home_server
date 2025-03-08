@@ -4,7 +4,7 @@ Description=nextcloud-collabora
 [Container]
 Image=docker.io/collabora/code:latest
 ContainerName=nextcloud-collabora
-EnvironmentFile=/container/envfiles/nextcloud.env
+EnvironmentFile=%h/.podman_home_server/nextcloud.env
 Volume=nextcloud-collabora:/etc/coolwsd
 Pod=nextcloud.pod
 #PublishPort=9980:9980

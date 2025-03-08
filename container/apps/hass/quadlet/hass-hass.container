@@ -6,7 +6,7 @@ Image=docker.io/homeassistant/home-assistant:stable
 ExecArgs=--pull=always
 ContainerName=hass-hass
 AddCapability=CAP_NET_RAW CAP_NET_BIND_SERVICE
-EnvironmentFile=/container/envfiles/hass.env
+EnvironmentFile=%h/.podman_home_server/hass.env
 Volume=hass-config:/config
 Volume=hass-media:/media
 Pod=hass.pod

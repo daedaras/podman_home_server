@@ -12,7 +12,8 @@ CON_DIR="$SCRIPT_DIR/../.."
 if [ ! -f "$CON_DIR/envfiles/hass.env" ]; then
     cp "$CON_DIR"/envfiles/example.hass.env "$CON_DIR"/envfiles/hass.env
 fi
-. "$CON_DIR"/envfiles/hass.env
+cp "$CON_DIR"/envfiles/hass.env "$HOME"/.podman_home_server/hass.env
+. "$HOME"/.podman_home_server/hass.env
 
 log "## stop home-assistant (if running)"
 systemctl --user stop hass &> /dev/null
