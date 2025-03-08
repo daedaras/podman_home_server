@@ -38,7 +38,7 @@ update_check () {
 
 if [ "$(update_check)" != "Everything up to date" ]; then
     $occ maintenance:mode --on
-    while [ "$(update_check)" ]; do
+    while [ "$(update_check)" != "Everything up to date" ]; do
         if $occ upgrade; then
             sleep 3
             $occ db:add-missing-indices
