@@ -13,6 +13,7 @@ PublishPort=1880:1880
 
 [Service]
 Restart=always
+ExecStartPre=podman pull docker.io/nodered/node-red
 
 [Install]
 WantedBy=multi-user.target default.target

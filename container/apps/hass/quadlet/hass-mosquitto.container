@@ -3,7 +3,6 @@ Description=hass-mosquitto
 
 [Container]
 Image=docker.io/eclipse-mosquitto:latest
-ExecArgs=--pull=always
 ContainerName=hass-mosquitto
 Volume=hass-mosquitto-config:/mosquitto/config
 Volume=hass-mosquitto-data:/mosquitto/data
@@ -13,9 +12,7 @@ Pod=hass.pod
 
 [Service]
 Restart=always
-ExecStartPre=mkdir -p hass-mosquitto-config
-ExecStartPre=mkdir -p hass-mosquitto-data
-ExecStartPre=mkdir -p hass-mosquitto-log
+ExecStartPre=podman pull docker.io/eclipse-mosquitto:latest
 
 [Install]
 WantedBy=multi-user.target default.target

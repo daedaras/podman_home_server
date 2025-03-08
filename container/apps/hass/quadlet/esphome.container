@@ -3,7 +3,6 @@ Description=esphome
 
 [Container]
 Image=docker.io/esphome/esphome:stable
-ExecArgs=--pull=always
 ContainerName=esphome
 Volume=hass-esphome:/config
 Volume=/etc/localtime:/etc/localtime:ro
@@ -13,6 +12,7 @@ Network=host
 
 [Service]
 Restart=always
+ExecStartPre=podman pull docker.io/esphome/esphome:stable
 
 [Install]
 WantedBy=multi-user.target default.target
